@@ -204,17 +204,17 @@ class Yun:
             origin = my_point
         else:
             origin = self.task_list[-1]['originPoint']
-        data = {
+        route = {
             'key': my_key,
             'origin': origin,
             'destination': point
         }
-        resp = requests.get("https://restapi.amap.com/v4/direction/bicycling", params=data)
+        resp = requests.get("https://restapi.amap.com/v3/direction/walking", params=route)
         j = json.loads(resp.text)
         split_points = []
         split_point = []
-        for path in j['data']['paths']:
-            self.now_dist += path['distance']
+        for path in j['route']['paths']:
+            self.now_dist += int(path['distance'])
             path['steps'][-1]['polyline'] += ';' + point
             for step in path['steps']:
                 polyline = step['polyline']
